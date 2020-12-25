@@ -165,6 +165,9 @@ const CityBreakList: React.FC<RouteComponentProps> = ({history}) => {
                             userId={cityBreak.userId}
                             status={cityBreak.status}
                             version={cityBreak.version}
+                            imgPath={cityBreak.imgPath}
+                            latitude={cityBreak.latitude}
+                            longitude={cityBreak.longitude}
                             onEdit={(id) => history.push(`/cityBreak/${id}`)}
                         />
                     );

@@ -6,10 +6,11 @@ interface ItemPropsExt extends CityBreakProps {
     onEdit: (_id?: string) => void;
 }
 
-const CityBreak: React.FC<ItemPropsExt> = ({_id, name, price, onEdit}) => {
+const CityBreak: React.FC<ItemPropsExt> = ({_id, name, price, imgPath, onEdit}) => {
     return (
         <IonItem onClick={() => onEdit(_id)}>
             <IonLabel>{name} - {price}$ </IonLabel>
+            <img src={imgPath} style={{ height: 50 }}  alt="image"/>
         </IonItem>
     );
 };

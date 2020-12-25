@@ -1,11 +1,14 @@
 export interface CityBreakProps {
-    _id?: string;
-    name: string;
+    _id?: string,
+    name: string,
     startDate: Date,
     endDate: Date,
     price: number,
     transportIncluded: boolean,
     userId: string,
     status: number,
-    version: number
+    version: number,
+    imgPath: string,
+    latitude: number,
+    longitude: number,
 }

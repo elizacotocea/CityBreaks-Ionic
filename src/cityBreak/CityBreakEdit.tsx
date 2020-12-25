@@ -12,7 +12,7 @@ import {
     IonToolbar,
     IonLabel,
     IonDatetime,
-    IonCheckbox
+    IonCheckbox, IonFabButton, IonFab, IonIcon, IonActionSheet
 } from '@ionic/react';
 import {getLogger} from '../core';
 import {CityBreakContext} from './CityBreakProvider';
@@ -20,6 +20,9 @@ import {RouteComponentProps} from 'react-router';
 import {CityBreakProps} from './CityBreakProps';
 import {AuthContext} from "../auth";
 import {useNetwork} from "./useNetwork";
+import {Photo, usePhotoGallery} from "./useImageGallery";
+import { camera, trash, close } from "ionicons/icons";
+import {MapComponent} from "./MapComponent";
 
 const log = getLogger('CityBreakEdit');
 
@@ -39,10 +42,15 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
     const [endDate, setEndDate] = useState(new Date());
     const [price, setPrice] = useState(0);
     const [transportIncluded, setTransportIncluded] = useState(false);
+    const [imgPath, setImgPath] = useState("");
+    const [latitude, setLatitude] = useState(46.7533824);
+    const [longitude, setLongitude] = useState(23.5831296);
     const [cityBreak, setCityBreak] = useState<CityBreakProps>();
     const {_id} = useContext(AuthContext);
     const [userId, setUserId] = useState(_id);
 
+    const { photos,takePhoto,deletePhoto } = usePhotoGallery();
+    const [photoDeleted, setPhotoDeleted] = useState<Photo>();
 
     useEffect(() => {
         setItemV2(oldCityBreak);
@@ -63,8 +71,10 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
             setTransportIncluded(cityBreak.transportIncluded);
             setStatus(cityBreak.status);
             setVersion(cityBreak.version);
+            setImgPath(cityBreak.imgPath);
             getServerCityBreak && getServerCityBreak(match.params.id!, cityBreak?.version);
-
+            if (cityBreak.latitude) setLatitude(cityBreak.latitude);
+            if (cityBreak.longitude) setLongitude(cityBreak.longitude);
         }
     }, [match.params.id, cityBreaks, getServerCityBreak]);
 
@@ -79,8 +89,11 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
             transportIncluded,
             userId,
             status: 0,
-            version: cityBreak.version ? cityBreak.version + 1 : 1
-        } : {name, startDate, endDate, price, transportIncluded, userId, status: 0, version: 1};
+            version: cityBreak.version ? cityBreak.version + 1 : 1,
+            imgPath,
+            latitude,
+            longitude
+        } : {name, startDate, endDate, price, transportIncluded, userId, status: 0, version: 1,imgPath, latitude, longitude};
         saveCityBreak && saveCityBreak(editedCityBreak,
             networkStatus.connected
         ).then(() => {
@@ -100,7 +113,10 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
                 transportIncluded,
                 userId,
                 status: 0,
-                version: oldCityBreak?.version + 1
+                version: oldCityBreak?.version + 1,
+                imgPath,
+                latitude,
+                longitude
             };
             saveCityBreak && saveCityBreak(editedItem, networkStatus.connected).then(() => {
                 history.goBack();
@@ -120,7 +136,10 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
                 transportIncluded: oldCityBreak?.transportIncluded,
                 userId: oldCityBreak?.userId,
                 status: oldCityBreak?.status,
-                version: oldCityBreak?.version
+                version: oldCityBreak?.version,
+                imgPath: oldCityBreak?.imgPath,
+                latitude: oldCityBreak?.latitude,
+                longitude: oldCityBreak?.longitude
             };
             saveCityBreak && editedItem && saveCityBreak(editedItem, networkStatus.connected).then(() => {
                 history.goBack();
@@ -131,18 +150,16 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
 
     const handleDelete = () => {
         const deletedCityBreak = cityBreak
-            ? {...cityBreak, name, startDate, endDate, price, transportIncluded, userId, status: 0, version: 0}
-            : {name, startDate, endDate, price, transportIncluded, userId, status: 0, version: 0};
+            ? {...cityBreak, name, startDate, endDate, price, transportIncluded, userId, status: 0, version: 0, imgPath, latitude, longitude}
+            : {name, startDate, endDate, price, transportIncluded, userId, status: 0, version: 0, imgPath, latitude, longitude};
         deleteCityBreak && deleteCityBreak(deletedCityBreak, networkStatus.connected).then(() => history.goBack());
     };
     log('render');
-
-    if (itemV2) {
         return (
             <IonPage>
                 <IonHeader>
                     <IonToolbar>
-                        <IonTitle>Edit</IonTitle>
+                        <IonTitle>Edit1</IonTitle>
                         <IonButtons slot="end">
                             <IonButton onClick={handleSave}>Save</IonButton>
                             <IonButton onClick={handleDelete}>Delete</IonButton>
@@ -178,7 +195,15 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
                     <IonLabel>End date: </IonLabel>
                     <IonDatetime value={Moment(new Date(endDate)).format('MM/DD/YYYY')}
                                  onIonChange={e => setEndDate(e.detail.value ? new Date(e.detail.value) : new Date())}/>
-
+                    <img src ={cityBreak?.imgPath} alt="image2"/>
+                    <MapComponent
+                        lat={latitude}
+                        lng={longitude}
+                        onMapClick={(location: any) => {
+                            setLatitude(location.latLng.lat());
+                            setLongitude(location.latLng.lng());
+                        }}
+                    />
 
                     {itemV2 && (
                         <>
@@ -210,60 +235,42 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
                     {savingError && (
                         <div>{savingError.message || "Failed to save cityBreak"}</div>
                     )}
+                    <IonFab vertical="bottom" horizontal="center" slot="fixed">
+                        <IonFabButton
+                            onClick={() => {
+                                const photoTaken = takePhoto();
+                                photoTaken.then((data) => {
+                                    setImgPath(data.webviewPath!);
+                                });
+                            }}
+                        >
+                            <IonIcon icon={camera} />
+                        </IonFabButton>
+                    </IonFab>
+                    <IonActionSheet
+                        isOpen={!!photoDeleted}
+                        buttons={[
+                            {
+                                text: "Delete",
+                                role: "destructive",
+                                icon: trash,
+                                handler: () => {
+                                    if (photoDeleted) {
+                                        deletePhoto(photoDeleted);
+                                        setPhotoDeleted(undefined);
+                                    }
+                                },
+                            },
+                            {
+                                text: "Cancel",
+                                icon: close,
+                                role: "cancel",
+                            },
+                        ]}
+                        onDidDismiss={() => setPhotoDeleted(undefined)}
+                    />
                 </IonContent>
             </IonPage>
         );
-    } else {
-        return (
-            <IonPage>
-                <IonHeader>
-                    <IonToolbar>
-                        <IonTitle>Edit</IonTitle>
-                        <IonButtons slot="end">
-                            <IonButton onClick={handleSave}>Save</IonButton>
-                            <IonButton onClick={handleDelete}>Delete</IonButton>
-                        </IonButtons>
-                    </IonToolbar>
-                </IonHeader>
-                <IonContent>
-                    <IonItem>
-                        <IonLabel>City name: </IonLabel>
-                        <IonInput
-                            value={name}
-                            onIonChange={(e) => setName(e.detail.value || "")}
-                        />
-                    </IonItem>
-                    <IonItem>
-                        <IonLabel>Price</IonLabel>
-                        <IonInput
-                            value={price}
-                            onIonChange={(e) => setPrice(Number(e.detail.value))}
-                        />
-                    </IonItem>
-
-                    <IonItem>
-                        <IonLabel>Transport included: </IonLabel>
-                        <IonCheckbox
-                            checked={transportIncluded}
-                            onIonChange={(e) => setTransportIncluded(e.detail.checked)}
-                        />
-                    </IonItem>
-                    <IonLabel>Start date: </IonLabel>
-                    <IonDatetime value={Moment(new Date(startDate)).format('MM/DD/YYYY')}
-                                 onIonChange={e => setStartDate(e.detail.value ? new Date(e.detail.value) : new Date())}/>
-                    <IonLabel>End date: </IonLabel>
-                    <IonDatetime value={Moment(new Date(endDate)).format('MM/DD/YYYY')}
-                                 onIonChange={e => setEndDate(e.detail.value ? new Date(e.detail.value) : new Date())}/>
-
-
-                    <IonLoading isOpen={saving}/>
-                    {savingError && (
-                        <div>{savingError.message || "Failed to save item"}</div>
-                    )}
-
-                </IonContent>
-            </IonPage>
-        );
-    }
-};
+    };
 export default CityBreakEdit;

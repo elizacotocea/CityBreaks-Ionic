@@ -234,6 +234,7 @@ export const CityBreakProvider: React.FC<CityBreakProviderProps> = ({children}) 
                     });
                 } else if (cityBreak.status === 2) {
                     cityBreak.status = 0;
+                    console.log("before calling update");
                     const newCityBreak = await updateCityBreak(token, cityBreak);
                     dispatch({type: SAVE_ITEM_SUCCEEDED, payload: {cityBreak: newCityBreak}});
                     await Storage.set({
@@ -271,7 +272,6 @@ export const CityBreakProvider: React.FC<CityBreakProviderProps> = ({children}) 
                 }
             } catch (error) {
                 const allKeys = Storage.keys();
-                console.log(allKeys);
                 let promisedCityBreaks;
                 var i;
 
@@ -296,8 +296,6 @@ export const CityBreakProvider: React.FC<CityBreakProviderProps> = ({children}) 
                         } catch (e) {
                             return null;
                         }
-                        console.log(typeof object);
-                        console.log(object);
                         if (object.status !== 2) {
                             return object;
                         }
@@ -334,7 +332,7 @@ export const CityBreakProvider: React.FC<CityBreakProviderProps> = ({children}) 
             dispatch({type: SAVE_ITEM_SUCCEEDED, payload: {cityBreak: savedCityBreak}});
             dispatch({type: CONFLICT_SOLVED});
         } catch (error) {
-            log("saveCityBreak failed with errror:", error);
+            log("saveCityBreak failed with error:", error);
 
             if (cityBreak._id === undefined) {
                 cityBreak._id = random_id();
@@ -359,7 +357,6 @@ export const CityBreakProvider: React.FC<CityBreakProviderProps> = ({children}) 
             }
             dispatch({type: DELETE_ITEM_STARTED});
             const deletedCityBreak = await eraseCityBreak(token, cityBreak);
-            console.log(deletedCityBreak);
             await Storage.remove({key: cityBreak._id!});
             dispatch({type: DELETE_ITEM_SUCCEEDED, payload: {cityBreak: cityBreak}});
         } catch (error) {

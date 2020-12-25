@@ -20,7 +20,10 @@ export const getCityBreaks: (token: string) => Promise<CityBreakProps[]> = (toke
                     endDate: item.endDate,
                     price: item.price,
                     transportIncluded: item.transportIncluded,
-                    userId: item.userId
+                    userId: item.userId,
+                    imgPath: item.imgPath,
+                    latitude: item.latitude,
+                    longitude: item.longitude
                 }),
             });
         });
@@ -47,7 +50,10 @@ export const createCityBreak: (
                 endDate: item.endDate,
                 price: item.price,
                 transportIncluded: item.transportIncluded,
-                userId: item.userId
+                userId: item.userId,
+                imgPath: item.imgPath,
+                latitude: item.latitude,
+                longitude: item.longitude
             }),
 
         });
@@ -71,7 +77,10 @@ export const updateCityBreak: (
                 endDate: item.endDate,
                 price: item.price,
                 transportIncluded: item.transportIncluded,
-                userId: item.userId
+                userId: item.userId,
+                imgPath: item.imgPath,
+                latitude: item.latitude,
+                longitude: item.longitude
             }),
         });
     });
