@@ -60,9 +60,11 @@ const CityBreakList: React.FC<RouteComponentProps> = ({history}) => {
         if (networkStatus.connected) {
             updateServer && updateServer();
         }
+        console.log(cityBreaksShow?.length)
     }, [networkStatus.connected]);
 
     useEffect(() => {
+
         if (cityBreaks?.length) {
             setCityBreaksShow(cityBreaks.slice(0, 10));
         }

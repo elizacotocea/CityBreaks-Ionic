@@ -2,7 +2,7 @@ export const baseUrl = 'localhost:3001';
 //export const baseUrl = '192.168.100.76:3001';
 
 export const getLogger: (tag: string) => (...args: any) => void =
-    tag => (...args) => console.log(tag, ...args);
+    tag => (...args) => null;
 
 const log = getLogger('api');
 

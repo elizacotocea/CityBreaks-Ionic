@@ -80,6 +80,7 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
 
 
     const handleSave = () => {
+        console.log('handle save')
         const editedCityBreak = cityBreak ? {
             ...cityBreak,
             name,
@@ -97,6 +98,7 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
         saveCityBreak && saveCityBreak(editedCityBreak,
             networkStatus.connected
         ).then(() => {
+            console.log('go back')
             if (itemV2 === undefined) history.goBack();
         });
     }

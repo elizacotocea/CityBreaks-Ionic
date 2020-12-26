@@ -41,6 +41,8 @@ export const createCityBreak: (
     var result = axios.post(itemUrl, item, authConfig(token));
     result.then(async function (r) {
         var item = r.data;
+        console.log('res data')
+        console.log(r.data)
         await Storage.set({
             key: item._id!,
             value: JSON.stringify({
@@ -93,6 +95,7 @@ export const eraseCityBreak: (
     item: CityBreakProps
 ) => Promise<CityBreakProps[]> = (token, item) => {
     var result = axios.delete(`${itemUrl}/${item._id}`, authConfig(token));
+    console.log('in erase')
     result.then(async function (r) {
         var item = r.data;
         await Storage.remove({

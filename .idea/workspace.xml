@@ -10,22 +10,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d809b96-8d5e-4e32-8b09-cd86b9a5a06a" name="Default Changelist" comment="Local storage, solved conflicts">
-      <change afterPath="$PROJECT_DIR$/src/cityBreak/MapComponent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cityBreak/mapsApiKey.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cityBreak/useImageGallery.ts" afterDir="false" />
+    <list default="true" id="2d809b96-8d5e-4e32-8b09-cd86b9a5a06a" name="Default Changelist" comment="add photo and map">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capacitor.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/capacitor.config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth/AuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/AuthProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cityBreak/CityBreak.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/cityBreak/CityBreak.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cityBreak/CityBreakApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/cityBreak/CityBreakApi.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cityBreak/CityBreakEdit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/cityBreak/CityBreakEdit.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cityBreak/CityBreakList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/cityBreak/CityBreakList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cityBreak/CityBreakProps.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/cityBreak/CityBreakProps.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cityBreak/CityBreakProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/cityBreak/CityBreakProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,6 +73,7 @@
       <workItem from="1608241451659" duration="62000" />
       <workItem from="1608843610446" duration="2789000" />
       <workItem from="1608909216386" duration="9997000" />
+      <workItem from="1608979671374" duration="1218000" />
     </task>
     <task id="LOCAL-00001" summary="citybreak page">
       <created>1606140951895</created>
@@ -118,7 +110,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="citybreak page" />
     <MESSAGE value="Local storage, solved conflicts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Local storage, solved conflicts" />
+    <MESSAGE value="add photo and map" />
+    <option name="LAST_COMMIT_MESSAGE" value="add photo and map" />
   </component>
   <component name="WindowStateProjectService">
     <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1608885704813">
@@ -141,10 +134,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="586" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1608887889502" />
-    <state x="478" y="145" width="579" height="534" key="find.popup" timestamp="1608919255538">
+    <state x="478" y="145" width="579" height="534" key="find.popup" timestamp="1608921158904">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="478" y="145" width="579" height="534" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1608919255538" />
+    <state x="478" y="145" width="579" height="534" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1608921158904" />
     <state x="545" y="185" key="refactoring.ChangeSignatureDialog" timestamp="1607350319876">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
