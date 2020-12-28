@@ -4,7 +4,6 @@ import {RouteComponentProps} from 'react-router';
 import {IonButton, IonContent, IonHeader, IonInput, IonLoading, IonPage, IonTitle, IonToolbar} from '@ionic/react';
 import {AuthContext} from './AuthProvider';
 import {getLogger} from '../core';
-
 const log = getLogger('Login');
 
 interface LoginState {
