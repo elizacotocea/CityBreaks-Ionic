@@ -197,7 +197,7 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
                     <IonLabel>End date: </IonLabel>
                     <IonDatetime value={Moment(new Date(endDate)).format('MM/DD/YYYY')}
                                  onIonChange={e => setEndDate(e.detail.value ? new Date(e.detail.value) : new Date())}/>
-                    <img src ={cityBreak?.imgPath} alt="image2"/>
+                    <img src ={cityBreak?.imgPath===imgPath ? cityBreak?.imgPath : imgPath} alt=""/>
                     <MapComponent
                         lat={latitude}
                         lng={longitude}

@@ -17,7 +17,7 @@ import {
     IonInfiniteScrollContent,
     IonSelect,
     IonSelectOption,
-    IonSearchbar,
+    IonSearchbar, createAnimation,
 } from "@ionic/react";
 
 import {add} from "ionicons/icons";
@@ -27,10 +27,12 @@ import {CityBreakContext} from "./CityBreakProvider";
 import {AuthContext} from "../auth";
 import {CityBreakProps} from "./CityBreakProps";
 import {useNetwork} from "./useNetwork";
-
+import {MyComponent} from "../animations/MyComponent";
 const log = getLogger('CityBreakList');
 
 const CityBreakList: React.FC<RouteComponentProps> = ({history}) => {
+    useEffect(simpleAnimation, []);
+
     const {networkStatus} = useNetwork();
 
     const {cityBreaks, fetching, fetchingError, updateServer} = useContext(CityBreakContext);
@@ -50,6 +52,12 @@ const CityBreakList: React.FC<RouteComponentProps> = ({history}) => {
 
     const {logout} = useContext(AuthContext);
 
+    const element = document.getElementsByClassName('addButton');
+    console.log(element[0])
+    element[0]?.addEventListener("onmouseover",function(){
+        simpleAnimation()
+    });
+
     const handleLogout = () => {
         logout?.();
         return <Redirect to={{pathname: "/login"}}/>;
@@ -60,7 +68,6 @@ const CityBreakList: React.FC<RouteComponentProps> = ({history}) => {
         if (networkStatus.connected) {
             updateServer && updateServer();
         }
-        console.log(cityBreaksShow?.length)
     }, [networkStatus.connected]);
 
     useEffect(() => {
@@ -116,12 +123,29 @@ const CityBreakList: React.FC<RouteComponentProps> = ({history}) => {
         }
     }, [search, cityBreaks]);
 
+    function simpleAnimation() {
+        console.log('in simple')
+        const el = document.querySelector('.addButton');
+        if (el) {
+            const animation = createAnimation()
+                .addElement(el)
+                .duration(1000)
+                .direction('alternate')
+                .iterations(Infinity)
+                .keyframes([
+                    {offset: 0,opacity: '0.6', transform: 'scale(0.7)'},
+                    {offset: 1,opacity: '0.99', transform: 'scale(1)'}
+                ])
+            animation.play();
+        }
+    }
+
 
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>CityBreaks</IonTitle>
+                    <MyComponent/>
                     <IonButton onClick={handleLogout}>Logout</IonButton>
                 </IonToolbar>
             </IonHeader>
@@ -186,7 +210,8 @@ const CityBreakList: React.FC<RouteComponentProps> = ({history}) => {
                     <div>{fetchingError.message || "Failed to fetch cityBreaks"}</div>
                 )}
                 <IonFab vertical="bottom" horizontal="end" slot="fixed">
-                    <IonFabButton onClick={() => history.push("/cityBreak")}>
+                    <IonFabButton className="addButton"
+                                  onClick={() => history.push("/cityBreak")}>
                         <IonIcon icon={add}/>
                     </IonFabButton>
                 </IonFab>
