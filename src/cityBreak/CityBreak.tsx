@@ -10,6 +10,7 @@ interface ItemPropsExt extends CityBreakProps {
 
 const CityBreak: React.FC<ItemPropsExt> = ({_id, name, price, imgPath, onEdit}) => {
     const [showModal, setShowModal] = useState(false);
+    console.log(_id)
     return (
         <IonItem>
             <IonLabel onClick={() => onEdit(_id)}>{name} - {price}$ </IonLabel>

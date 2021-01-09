@@ -12,7 +12,7 @@ import {
     IonToolbar,
     IonLabel,
     IonDatetime,
-    IonCheckbox, IonFabButton, IonFab, IonIcon, IonActionSheet
+    IonCheckbox, IonFabButton, IonFab, IonIcon, IonActionSheet, createAnimation
 } from '@ionic/react';
 import {getLogger} from '../core';
 import {CityBreakContext} from './CityBreakProvider';
@@ -149,6 +149,96 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
         }
     };
 
+    useEffect(() => {
+        async function groupedAnimation() {
+            const saveButtonAnimation = createAnimation()
+                .addElement(document.getElementsByClassName("saveButton")[0])
+                .duration(3000)
+                .direction('alternate')
+                .iterations(1)
+                .keyframes([
+                    {offset: 0, opacity: '0.6', transform: 'scale(0.7)'},
+                    {offset: 0.5, opacity: '0.7', transform: 'scale(0.8)'},
+                    {offset: 1, opacity: '0.99', transform: 'scale(1)'}
+                ])
+
+            const deleteButtonAnimation = createAnimation()
+                .addElement(document.getElementsByClassName("deleteButton")[0])
+                .duration(3000)
+                .direction('alternate')
+                .iterations(1)
+                .keyframes([
+                    {offset: 0, opacity: '0.6', transform: 'scale(0.7)'},
+                    {offset: 0.5, opacity: '0.7', transform: 'scale(0.8)'},
+                    {offset: 1, opacity: '0.99', transform: 'scale(1)'}
+                ])
+
+            const titleAnimation = createAnimation()
+                .addElement(document.getElementsByClassName("title")[0])
+                .duration(3000)
+                .direction('alternate')
+                .iterations(1)
+                .keyframes([
+                    {offset: 0, opacity: '0.2', transform: 'scale(1)'},
+                    {offset: 0.5, opacity: '0.5', transform: 'scale(1)'},
+                    {offset: 1, opacity: '0.99', transform: 'scale(1)'}
+                ])
+
+            const animations = createAnimation()
+                .duration(1000)
+                .iterations(1)
+                .direction('alternate')
+                .addAnimation([saveButtonAnimation, deleteButtonAnimation,titleAnimation])
+
+
+            animations.play();
+        }
+
+        groupedAnimation();
+    }, [])
+
+    useEffect(() => {
+        async function chainedAnimations() {
+
+            const nameAnimation = createAnimation()
+                .addElement(document.getElementsByClassName("name")[0])
+                .fill('none')
+                .duration(1000)
+                .iterations(1)
+                .fromTo('transform', 'translateX(300px)', 'translateX(0px)')
+
+
+            const priceAnimation = createAnimation()
+                .addElement(document.getElementsByClassName("price")[0])
+                .fill('none')
+                .duration(1000)
+                .iterations(1)
+                .fromTo('transform', 'translateX(300px)', 'translateX(0px)')
+
+
+            const date1Animation = createAnimation()
+                .addElement(document.getElementsByClassName("date1")[0])
+                .fill('none')
+                .duration(1000)
+                .iterations(1)
+                .fromTo('transform', 'translateX(300px)', 'translateX(0px)')
+
+            const date2Animation = createAnimation()
+                .addElement(document.getElementsByClassName("date2")[0])
+                .fill('none')
+                .duration(1000)
+                .iterations(1)
+                .fromTo('transform', 'translateX(300px)', 'translateX(0px)')
+
+            await nameAnimation.play();
+            await priceAnimation.play();
+            await date1Animation.play();
+            await date2Animation.play();
+        }
+
+        chainedAnimations();
+    }, []);
+
 
     const handleDelete = () => {
         const deletedCityBreak = cityBreak
@@ -161,24 +251,24 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
             <IonPage>
                 <IonHeader>
                     <IonToolbar>
-                        <IonTitle>Edit1</IonTitle>
+                        <IonTitle className="title">Edit</IonTitle>
                         <IonButtons slot="end">
-                            <IonButton onClick={handleSave}>Save</IonButton>
-                            <IonButton onClick={handleDelete}>Delete</IonButton>
+                            <IonButton className="saveButton" onClick={handleSave}>Save</IonButton>
+                            <IonButton className="deleteButton" onClick={handleDelete}>Delete</IonButton>
                         </IonButtons>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
                     <IonItem>
                         <IonLabel>City name: </IonLabel>
-                        <IonInput
+                        <IonInput className="name"
                             value={name}
                             onIonChange={(e) => setName(e.detail.value || "")}
                         />
                     </IonItem>
                     <IonItem>
                         <IonLabel>Price</IonLabel>
-                        <IonInput
+                        <IonInput className="price"
                             value={price}
                             onIonChange={(e) => setPrice(Number(e.detail.value))}
                         />
@@ -192,10 +282,10 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
                         />
                     </IonItem>
                     <IonLabel>Start date: </IonLabel>
-                    <IonDatetime value={Moment(new Date(startDate)).format('MM/DD/YYYY')}
+                    <IonDatetime className="date1" value={Moment(new Date(startDate)).format('MM/DD/YYYY')}
                                  onIonChange={e => setStartDate(e.detail.value ? new Date(e.detail.value) : new Date())}/>
                     <IonLabel>End date: </IonLabel>
-                    <IonDatetime value={Moment(new Date(endDate)).format('MM/DD/YYYY')}
+                    <IonDatetime  className="date2" value={Moment(new Date(endDate)).format('MM/DD/YYYY')}
                                  onIonChange={e => setEndDate(e.detail.value ? new Date(e.detail.value) : new Date())}/>
                     <img src ={cityBreak?.imgPath===imgPath ? cityBreak?.imgPath : imgPath} alt=""/>
                     <MapComponent
@@ -227,8 +317,8 @@ export const CityBreakEdit: React.FC<CityBreakEditProps> = ({history, match}) =>
                                 <IonLabel>End date: {itemV2.endDate}</IonLabel>
                             </IonItem>
 
-                            <IonButton onClick={handleConflict_keepVersion}>Keep your version</IonButton>
-                            <IonButton onClick={handleConflict_updateVersion}>Update to new version</IonButton>
+                            <IonButton className="deleteButton" onClick={handleConflict_keepVersion}>Keep your version</IonButton>
+                            <IonButton className="saveButton" onClick={handleConflict_updateVersion}>Update to new version</IonButton>
                         </>
                     )}
 
